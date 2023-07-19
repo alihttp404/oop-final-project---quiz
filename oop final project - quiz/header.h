@@ -3,6 +3,7 @@
 class Question
 {
 private:
+	int a;
 	string _text;
 	vector<pair<string, bool>>_answers; // bool cavabin duz olub olmadigini gosterir
 
