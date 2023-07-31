@@ -48,9 +48,27 @@ public:
 	const pair<string, bool> getAns3() { return _ans3; }
 	const pair<string, bool> getAns4() { return _ans4; }
 
-	void setText(string text)
+	void setText()
 	{
-		if (text.size() > 6) _text = text;
-		else throw "Question body must be at least 6 characters";
+		getline(cin, _text);
+		while (true)
+		{
+			if (_text.size() > 2) break;
+			else throw Exception("Sual minimum 3 simvol olmalidir", __FILE__, __DATE__, __LINE__);
+			getline(cin, _text);
+		}
+	}
+
+	void setAns1(string ans1)
+	{
+		while (true)
+		{
+			if (ans1.size() > 6)
+			{
+				_ans1.first = ans1;
+				break;
+			}
+			else throw "Question body must be at least 6 characters";
+		}
 	}
 };
