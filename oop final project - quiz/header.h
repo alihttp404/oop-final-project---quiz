@@ -69,7 +69,11 @@ public:
 	const pair<string, bool> getAns3() { return _ans3; }
 	const pair<string, bool> getAns4() { return _ans4; }
 
-	void setAns(pair<string, bool> destination, pair<string, bool> source) { destination = source; }
+	void setAns(pair<string, bool>& destination, pair<string, bool> source) 
+	{
+		destination.first = source.first;
+		destination.second = source.second;
+	}
 	void setText(string text) { _text = text; }
 
 	Question() = default;
@@ -124,10 +128,10 @@ public:
 			file << "Question: " << question->getText() << endl;
 
 			file << "Answers:" << endl;
-			file << "1. " << question->getAns1().first << " - " << (question->getAns1().second ? "Correct" : "Wrong") << endl;
-			file << "2. " << question->getAns2().first << " - " << (question->getAns2().second ? "Correct" : "Wrong") << endl;
-			file << "3. " << question->getAns3().first << " - " << (question->getAns3().second ? "Correct" : "Wrong") << endl;
-			file << "4. " << question->getAns4().first << " - " << (question->getAns4().second ? "Correct" : "Wrong") << endl;
+			file << "1. " << question->getAns1().first << " - " << (question->getAns1().second ? "1" : "0") << endl;
+			file << "2. " << question->getAns2().first << " - " << (question->getAns2().second ? "1" : "0") << endl;
+			file << "3. " << question->getAns3().first << " - " << (question->getAns3().second ? "1" : "0") << endl;
+			file << "4. " << question->getAns4().first << " - " << (question->getAns4().second ? "1" : "0") << endl;
 
 			file << endl;
 		}
