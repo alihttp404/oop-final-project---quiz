@@ -88,11 +88,11 @@ public:
 		setAns(_ans3, ans3);
 		setAns(_ans4, ans4);
 	}
+
 	friend void setCorrect(int option, Question*& question);
+	friend void editQuestion(Question*& question);
 	friend Quiz loadQuizFromFile(const string& filename);
-
 	friend Question* createQuestion();
-
 	friend ostream& operator<<(ostream& out, Question* q);
 };
 
@@ -108,6 +108,11 @@ ostream& operator<<(ostream& out, Question* q)
 
 void setCorrect(int option, Question*& question) // cavabin duzgun olub olmadigini teyin edir
 {
+	question->_ans1.second = false;
+	question->_ans2.second = false;
+	question->_ans3.second = false;
+	question->_ans4.second = false;
+
 	if (!option) question->_ans1.second = true;
 	else if (option == 1) question->_ans2.second = true;
 	else if (option == 2) question->_ans3.second = true;
@@ -236,15 +241,15 @@ Question* createQuestion()
 
 	cout << "Answer 1: ";
 	setText(ans1, 2);
-	question->_ans4.first = ans4;
+	question->_ans1.first = ans1;
 
 	cout << "Answer 2: ";
 	setText(ans2, 2);
-	question->_ans4.first = ans4;
+	question->_ans2.first = ans2;
 
 	cout << "Answer 3: ";
 	setText(ans3, 2);
-	question->_ans4.first = ans4;
+	question->_ans3.first = ans3;
 
 	cout << "Answer 4: ";
 	setText(ans4, 2);
@@ -259,6 +264,62 @@ Question* createQuestion()
 	setCorrect(option, question);
 
 	return question;
+}
+
+void editQuestion(Question*& question)
+{
+	Menu<string> menu(vector<string>
+	{
+		"Edit Question Text",
+			"Edit Answer 1",
+			"Edit Answer 2",
+			"Edit Answer 3",
+			"Edit Answer 4",
+			"Reset Correct Answer",
+			"Exit"
+	});
+
+	while (true)
+	{
+		int option = menu.start("Choose field to edit:\n");
+		if (option == 0)
+		{
+			system("CLS");
+			string text;
+			cout << "Question: ";
+			setText(text, 3);
+			question->setText(text);
+		}
+		else if (option >= 1 && option <= 4)
+		{
+			system("CLS");
+			string ans;
+			cout << "Answer " << option << ": ";
+			setText(ans, 3);
+			if (option == 1) question->_ans1.first = ans;
+			else if (option == 2) question->_ans2.first = ans;
+			else if (option == 3) question->_ans3.first = ans;
+			else if (option == 4) question->_ans4.first = ans;
+		}
+		else if (option == 5)
+		{
+			Menu<string> ansMenu(vector<string>
+			{
+				question->getAns1().first,
+					question->getAns2().first,
+					question->getAns3().first,
+					question->getAns4().first,
+					"Exit"
+			});
+
+			int ansOption = ansMenu.start("Choose the new correct answer:\n");
+			if (ansOption >= 0 && ansOption < 4)
+			{
+				setCorrect(ansOption, question);
+			}
+		}
+		else if (option == 6) break;
+	}
 }
 
 void createQuiz()
@@ -278,13 +339,25 @@ void createQuiz()
 	setText(quizName, 2);
 	quiz->_name = quizName;
 
+	int tracker = 0;
 	while (true)
 	{
 		int option = menu->start();
 		if (option == 0)
 		{
-			quiz->_questions.push_back(createQuestion());
+			Question* newQuestion = createQuestion();
+			cout << newQuestion;
+			_getch();
+			quiz->_questions.push_back(newQuestion);
+			tracker++;
 		}
+
+		else if (option == 1)
+		{
+			editQuestion(quiz->_questions[tracker - 1 ]);
+			tracker++;
+		}
+
 		else if (option == 2) quiz->save();
 	}
 }
