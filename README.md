@@ -1,4 +1,6 @@
-# 🔴🔴 ISTİFADƏÇİ TƏLİMATI - MÜTLƏQ OXUNMALI! 🔴🔴
+# 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+# 🔴 ISTİFADƏÇİ TƏLİMATI - MÜTLƏQ OXUNMALI! 🔴
+# 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 
 # HAZIR QUİZ
 ### Folderde STEP İT Academy haqqında step_quiz adında hazır quiz var, yararlana bilərsiniz))
