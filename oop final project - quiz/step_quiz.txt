@@ -1,0 +1,29 @@
+Question: STEP IT Academy necenci ilde yaranmisdir?
+Answer: 2012 - 0
+Answer: 2000 - 0
+Answer: 1999 - 1
+Answer: 2005 - 0
+
+Question: STEP-de imtahan qiymeti maksimum neche bal uzerindən hesablanir?
+Answer: 12 - 1
+Answer: 10 - 0
+Answer: 5 - 0
+Answer: 24 - 0
+
+Question: Akademiyanin Proqram Teminatinin Yaradilmasi kursuna qebul imtahanini neche bal teskil edir?
+Answer: 50 - 0
+Answer: 10 - 0
+Answer: 100 - 0
+Answer: 40 - 1
+
+Question: Proqram Teminatinin Yaradilmasi kursunun ilk bolmesi hansi proqramlasdirma dilinden ibaretdir?
+Answer: C++ - 0
+Answer: Python - 1
+Answer: JavaScript - 0
+Answer: HTML - 0
+
+Question: STEP IT Academy-nin dunya uzre neche filiali var??
+Answer: 57 - 0
+Answer: 32 - 0
+Answer: 102 - 1
+Answer: 86 - 0

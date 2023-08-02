@@ -555,7 +555,7 @@ void leaderboard()
 		while (leaderboardFile >> name >> correct >> total >> incorrect)
 		{
 			scores[name] = correct;
-			cout << "Name: " << name << ", Correct: " << correct << ", Total: " << total << ", Incorrect: " << incorrect << endl;
+			
 		}
 
 		leaderboardFile.close();
