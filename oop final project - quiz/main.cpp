@@ -6,31 +6,19 @@
 #include <fstream>
 #include <conio.h>
 using namespace std;
-#include "header.h"
 #include "menu.h"
+#include "header.h"
 
 int main()
 {
-    Quiz myQuiz("Sample Quiz");
-
-    Question* question1 = new Question(
-        "What is the capital of France?",
-        { "Paris", true },
-        { "Berlin", false },
-        { "Madrid", false },
-        { "London", false }
-    );
-
-    Question* question2 = new Question(
-        "What is the largest planet in our solar system?",
-        { "Jupiter", true },
-        { "Mars", false },
-        { "Venus", false },
-        { "Saturn", false }
-    );
-
-    myQuiz._questions.push_back(question1);
-    myQuiz._questions.push_back(question2);
-
-    myQuiz.save();
+	//vector<string> options
+	//{
+	//	"Create Quiz",
+	//	"Start Quiz",
+	//	"Leaderboard",
+	//	"Exit"
+	//};
+	//Menu<string>* start = new Menu<string>(options);
+	//int option = start->start();
+	createQuiz();
 }

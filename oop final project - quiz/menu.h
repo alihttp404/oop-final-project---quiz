@@ -23,7 +23,7 @@ public:
 
 	int start()
 	{
-		int ch = 224;
+		int ch = 0;
 		int option = 0;
 
 		while (true)
@@ -31,7 +31,8 @@ public:
 			print(option);
 
 			ch = _getch();
-			if (ch == 72)
+			if (ch == 27 || ch == 10 || ch == 13 || ch == '\n') return option;
+			else if (ch == 72)
 			{
 				option--;
 			}
@@ -39,7 +40,6 @@ public:
 			{
 				option++;
 			}
-			else if (ch == 27 || ch == 10) return option;
 		}
 	}
 };
