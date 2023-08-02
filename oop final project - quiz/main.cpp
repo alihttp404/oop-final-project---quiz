@@ -1,8 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <list>
+#include <sstream>
 #include <string>
+#include <unordered_map>
+
 #include <ctime>
+#include <algorithm>
 #include <fstream>
 #include <conio.h>
 using namespace std;
@@ -11,14 +14,6 @@ using namespace std;
 
 int main()
 {
-	//vector<string> options
-	//{
-	//	"Create Quiz",
-	//	"Start Quiz",
-	//	"Leaderboard",
-	//	"Exit"
-	//};
-	//Menu<string>* start = new Menu<string>(options);
-	//int option = start->start();
-	createQuiz();
+	start();
+	return 0;
 }

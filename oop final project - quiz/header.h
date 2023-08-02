@@ -32,8 +32,10 @@ public:
 		return _message.c_str();
 	}
 };
+
 class Quiz;
 Quiz loadQuizFromFile(const string& filename);
+
 void setText(string& text, int minTextLength) // userden stringlere min. simvol sayi ile input almaq ucun
 {
 	while (true)
@@ -49,6 +51,24 @@ void setText(string& text, int minTextLength) // userden stringlere min. simvol 
 			}
 		}
 		catch (Exception& ex) { cout << ex.what() << "\n\n\n"; }
+	}
+}
+
+void setText(string& text, int minTextLength, string prompt) // userden stringlere min. simvol sayi ile input almaq ucun
+{
+	while (true)
+	{
+		try
+		{
+			getline(cin, text);
+			if (text.size() >= minTextLength) break;
+			else
+			{
+				string msg = "Sual minimum " + to_string(minTextLength) + " simvol olmalidir";
+				throw Exception(msg, __FILE__, __DATE__, __LINE__);
+			}
+		}
+		catch (Exception& ex) { cout << ex.what() << "\n\n\n" << prompt << ": "; }
 	}
 }
 
@@ -70,6 +90,14 @@ public:
 	const pair<string, bool> getAns2() { return _ans2; }
 	const pair<string, bool> getAns3() { return _ans3; }
 	const pair<string, bool> getAns4() { return _ans4; }
+
+	int getCorrect()
+	{
+		if (_ans1.second) return 0;
+		else if (_ans2.second) return 1;
+		else if (_ans3.second) return 2;
+		else return 3;
+	}
 
 	void setAns(pair<string, bool>& destination, pair<string, bool> source) 
 	{
@@ -139,6 +167,11 @@ public:
 	void save()
 	{
 		ofstream file(_name + ".txt", ios::out);
+		ofstream names("quiznames.txt", ios::out | ios::app);
+		
+		names << _name << endl;
+		names.close();
+
 		try
 		{
 			if (!file) throw Exception("File could not be opened", __FILE__, __DATE__, __LINE__);
@@ -236,23 +269,23 @@ Question* createQuestion()
 
 	system("CLS");
 	cout << "Question: ";
-	setText(text, 3);
+	setText(text, 3, "Question: ");
 	question->setText(text);
 
 	cout << "Answer 1: ";
-	setText(ans1, 2);
+	setText(ans1, 2, "Answer 1: ");
 	question->_ans1.first = ans1;
 
 	cout << "Answer 2: ";
-	setText(ans2, 2);
+	setText(ans2, 2, "Answer 2: ");
 	question->_ans2.first = ans2;
 
 	cout << "Answer 3: ";
-	setText(ans3, 2);
+	setText(ans3, 2, "Answer 3: ");
 	question->_ans3.first = ans3;
 
 	cout << "Answer 4: ";
-	setText(ans4, 2);
+	setText(ans4, 2, "Answer 4: ");
 	question->_ans4.first = ans4;
 
 	system("CLS");
@@ -287,7 +320,7 @@ void editQuestion(Question*& question)
 			system("CLS");
 			string text;
 			cout << "Question: ";
-			setText(text, 3);
+			setText(text, 3, "Question: ");
 			question->setText(text);
 		}
 		else if (option >= 1 && option <= 4)
@@ -295,7 +328,7 @@ void editQuestion(Question*& question)
 			system("CLS");
 			string ans;
 			cout << "Answer " << option << ": ";
-			setText(ans, 3);
+			setText(ans, 3, "Answer: ");
 			if (option == 1) question->_ans1.first = ans;
 			else if (option == 2) question->_ans2.first = ans;
 			else if (option == 3) question->_ans3.first = ans;
@@ -324,6 +357,7 @@ void editQuestion(Question*& question)
 
 void createQuiz()
 {
+	int tracker = 0;
 	Quiz* quiz = new Quiz();
 	string quizName;
 	vector<string> options =
@@ -336,19 +370,15 @@ void createQuiz()
 	
 	system("CLS");
 	cout << "Quiz name: ";
-	setText(quizName, 2);
+	setText(quizName, 2, "Quiz name: ");
 	quiz->_name = quizName;
 
-	int tracker = 0;
 	while (true)
 	{
 		int option = menu->start();
 		if (option == 0)
 		{
-			Question* newQuestion = createQuestion();
-			cout << newQuestion;
-			_getch();
-			quiz->_questions.push_back(newQuestion);
+			quiz->_questions.push_back(createQuestion());
 			tracker++;
 		}
 
@@ -358,6 +388,215 @@ void createQuiz()
 			tracker++;
 		}
 
-		else if (option == 2) quiz->save();
+		else if (option == 2) 
+		{
+			quiz->save();
+			break;
+		}
+	}
+}
+
+bool checkFromFile(string filename, string word)
+{
+	vector<string> words;
+	ifstream file(filename);
+
+	string line;
+	while (getline(file, line)) 
+	{
+		stringstream ss(line);
+		string word;
+		while (ss >> word) words.push_back(word);
+	}
+
+	for (auto i : words) if (i == word) return true;
+
+	file.close();
+	return false;
+}
+
+void startQuiz()
+{
+	int correct = 0, pass = 0;
+	vector<string> quiz_names;
+	quiz_names.push_back("Exit");
+	ifstream file("quiznames.txt", ios::out);
+	try
+	{
+		if (!file) throw Exception("File acila bilmedi", __FILE__, __DATE__, __LINE__);
+	}
+	catch (Exception& ex) { cout << ex.what() << endl; return; }
+
+	string line;
+	while (getline(file, line))
+	{
+		quiz_names.push_back(line);
+	}
+	file.close();
+
+	Menu<string> quiz_names_menu(quiz_names);
+	int opt = quiz_names_menu.start();
+	if (opt == 0) return;
+
+	system("CLS");
+	Quiz quiz = loadQuizFromFile((quiz_names[opt] + ".txt"));
+
+	string name;
+	cout << "Enter your name: " << endl;
+	setText(name, 3, "Name: ");
+
+	ofstream names("names.txt", ios::out | ios::app);
+	names << name << endl;
+	names.close();
+
+	for (size_t i = 0; i < quiz._questions.size();)
+	{
+		Question* currentQuestion = quiz._questions[i];
+
+		Menu<string> question_menu;
+		if (i == quiz._questions.size() - 1) // axirinci sualda next olmasin
+		{
+			question_menu = Menu<string>(vector<string>{
+				currentQuestion->getAns1().first,
+					currentQuestion->getAns2().first,
+					currentQuestion->getAns3().first,
+					currentQuestion->getAns4().first,
+					"Back",
+					"Submit"
+			});
+
+			opt = question_menu.start(currentQuestion->getText());
+
+			if (currentQuestion->getCorrect() == opt)
+				correct++;
+
+			if (opt == 4)
+			{
+				pass++;
+				i--;
+			}
+
+			else if (opt == 5)
+			{
+				ofstream file(quiz.getName() + "Leaderboard.txt", ios::out | ios::app);
+				file << quiz.getName() << endl;
+				file << name << ' ' << correct << ' ' << quiz._questions.size() << ' ' << pass;
+				file.close();
+				return;
+			}
+		}
+
+		else
+		{
+			question_menu = Menu<string>(vector<string>{
+				currentQuestion->getAns1().first,
+					currentQuestion->getAns2().first,
+					currentQuestion->getAns3().first,
+					currentQuestion->getAns4().first,
+					"Next",
+					"Back",
+					"Submit"
+			});
+
+			opt = question_menu.start(currentQuestion->getText());
+
+			if (currentQuestion->getCorrect() == opt)
+				correct++;
+
+			if (opt == 4)
+			{
+				pass++;
+				i++;
+			}
+
+			else if (opt == 5)
+			{
+				ofstream file(quiz.getName() + "Leaderboard.txt", ios::out | ios::app);
+				file << name << ' ' << correct << ' ' << quiz._questions.size() << ' ' << pass;
+				file.close();
+				return;
+			}
+		}
+	}
+}
+
+
+void leaderboard()
+{
+	system("CLS");
+	ifstream file("quiznames.txt", ios::in);
+	string line;
+	vector<string> quizzes;
+	quizzes.push_back("Exit");
+
+	while (getline(file, line))
+		quizzes.push_back(line);
+
+	file.close();
+
+	Menu<string> leaderboard_menu(quizzes);
+
+	while (true)
+	{
+		int opt = leaderboard_menu.start("Select quiz you wish to see the leaderboard of:\n");
+		if (opt == 0) return;
+		ifstream leaderboardFile((quizzes[opt] + "Leaderboard.txt"), ios::in);
+
+		try
+		{
+			if (!leaderboardFile) throw Exception("File could not be opened", __FILE__, __DATE__, __LINE__);
+		}
+		catch (Exception& ex) { cout << ex.what() << endl; }
+
+		unordered_map<string, int> scores;
+
+		string name;
+		int correct, total, incorrect;
+		while (leaderboardFile >> name >> correct >> total >> incorrect)
+		{
+			scores[name] = correct;
+			cout << "Name: " << name << ", Correct: " << correct << ", Total: " << total << ", Incorrect: " << incorrect << endl;
+		}
+
+		leaderboardFile.close();
+
+		vector<pair<string, int>> sortedScores(scores.begin(), scores.end());
+		sort(sortedScores.begin(), sortedScores.end(), [](const auto& a, const auto& b) 
+			{
+				return a.second > b.second;
+			});
+
+		cout << "\nTop 5 Scores:\n";
+		int count = 0;
+		for (const auto& score : sortedScores)
+		{
+			cout << "Name: " << score.first << ", Correct Answers: " << score.second << endl;
+			count++;
+			if (count >= 5)
+				break;
+		}
+
+		cout << "Press any button to continue\n";
+		_getch();
+	}
+}
+
+void start()
+{
+	Menu<string> main(vector<string>
+	{
+		"Create Quiz",
+			"Start Quiz",
+			"Leaderboard",
+			"Quit"
+	});
+
+	while (true)
+	{
+		int opt = main.start();
+		if (opt == 0) createQuiz();
+		else if (opt == 1) startQuiz();
+		else if (opt == 2) leaderboard();
+		else if (opt == 3) return;
 	}
 }
