@@ -1,5 +1,5 @@
 # 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-# 🔴 ISTİFADƏÇİ TƏLİMATI - MÜTLƏQ OXUNMALI! 🔴
+# 🔴 İSTİFADƏÇİ TƏLİMATI - MÜTLƏQ OXUNMALI! 🔴
 # 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 
 
