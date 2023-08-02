@@ -8,7 +8,7 @@
 
 
 
-## Sualları Cavablandırma
+## 🔴 Sualları Cavablandırma ⬅️ ÇOX VACİB 🔴
 #### Sualı cavablandırmaq üçün istədiyiniz cavabına üzərinə gəlib "ENTER" vurmağınız, sonra isə "Next" seçiminin üzərinə gəlib "ENTER" vurmağınız lazımdır
 
 
