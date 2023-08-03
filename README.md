@@ -3,7 +3,7 @@
 # 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 
 
-# HAZIR QUİZ
+## HAZIR QUİZ
 #### Folderde STEP İT Academy haqqında step_quiz adında hazır quiz var, yararlana bilərsiniz))
 
 
